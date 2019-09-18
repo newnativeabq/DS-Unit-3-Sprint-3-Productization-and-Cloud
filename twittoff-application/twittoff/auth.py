@@ -49,7 +49,7 @@ def login():
         error = None
         user = db.execute(
             'SELECT * FROM user WHERE username = ?', (username,)
-        )
+        ).fetchone()
 
         if user is None:
             error = 'Incorrect username.'

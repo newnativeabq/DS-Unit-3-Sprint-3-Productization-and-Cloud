@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>{% block title %}{% endblock %} - TwitOff</title>
-    <link rel="stylesheet" href="{{ url_for('static/css/', filename='bootstrap.min.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static/css', filename='custom_style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/custom_style.css') }}">
 </head>
 <body>
     <nav class="navbar navbar-default">
@@ -37,18 +37,21 @@
     </nav>
 
     <section class="content">
-        <header>
+        <div class="container">
+            <header>
             {% block header %}{% endblock %}
-        </header>
-        {% for message in get_flashed_messages() %}
+            </header>
+            {% for message in get_flashed_messages() %}
             <div class="flash">{{ message }}</div>
-        {% endfor %}
-        {% block content %}{% endblock%}
+            {% endfor %}
+            {% block content %}{% endblock%}
+        </div>
+
     </section>
 
-    <script src="{{ url_for('static/js/', filename='jquery-3.4.1.min.js') }}"></script>
-    <script src="{{ url_for('static/js/', filename='popper.min.js') }}"></script>
-    <script src="{{ url_for('static/js/', filename='bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery-3.4.1.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/popper.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
 
 </body>
 </html>

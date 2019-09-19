@@ -12,8 +12,8 @@ def get_twitter_connection():
             os.environ.get('TWITTER_CONSUMER_SECRET')
         )
         auth.set_access_token(
-            os.environ.get(),
-            os.environ.get()
+            os.environ.get('TWITTER_ACCESS_TOKEN'),
+            os.environ.get('TWITTER_ACCESS_TOKEN_SECRET')
         )
         g.twc = tweepy.API(auth)
 
@@ -26,7 +26,12 @@ def get_tweets(user, number):
         user,
         count=number,
     )
-    return tweets
+    # strip unnecessary meta tags and return only body text from tweets
+    tmp = []
+    for tweet in tweets:
+        tmp.append(tweet.text)
+
+    return tmp
 
 
 def push_tweets(user, tweets):

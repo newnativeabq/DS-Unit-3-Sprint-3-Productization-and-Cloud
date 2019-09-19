@@ -1,7 +1,8 @@
-DROP TABLE IF EXISTS user;
-DROP TABLE IF EXISTS post;
+DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS tweets;
+DROP TABLE IF EXISTS authors;
 
-CREATE TABLE user (
+CREATE TABLE users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     username TEXT UNIQUE NOT NULL,
     password TEXT NOT NULL
@@ -11,10 +12,17 @@ CREATE TABLE tweets (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     author_id INTEGER NOT NULL,
     body TEXT NOT NULL,
-    FOREIGN KEY (author_id) REFERENCES author (id)
+    FOREIGN KEY (author_id) REFERENCES authors (id)
 );
 
-CREATE TABLE author (
+CREATE TABLE authors (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     twitter_handle TEXT NOT NULL
 );
+
+CREATE TABLE vectorizedTweets (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    tweet_id INTEGER NOT NULL,
+    vector TEXT NOT NULL,
+    FOREIGN KEY (tweet_id) REFERENCES tweets (id)
+)

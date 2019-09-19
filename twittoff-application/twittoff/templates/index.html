@@ -10,10 +10,55 @@
     <br>
     <strong>TODO</strong>
     <ul>
-        <li>ADD TWITTER HANDLE FORM</li>
-        <li>GET/LOAD TWEETS</li>
-        <li>GET/LOAD BASILICA DATA</li>
+        <li>SELECT TWITTER HANDLES FORM</li>
+        <li>LOAD TWEETS INTO DB ON ANALYZE</li>
+        <li>GET/LOAD BASILICA DATA ON TWEET PUSH TO DB</li>
+        <li>CRY FOR JOY</li>
+        <li>CREATE DATA EXTRACTION CLASS FOR MODELING</li>
+        <li>CREATE REGR MODEL</li>
+        <li>REPORT REGR MODEL TO HOME</li>
+        <li>DISPLAY REGR FINDINGS ON INDEX RENDER</li>
     </ul>
+    <br>
+
+    <!-- Add Twitter Handle to DB -->
+    <h4>Add Twitter User</h4>
+    <form action="{{ url_for('home.add_handle')}}" method="POST">
+        {{ addform.hidden_tag() }}
+        <p>
+            {{ addform.twitter_handle.label }} <br>
+            {{ addform.twitter_handle }}
+        </p>
+        <p>
+            {{ addform.submit() }}
+        </p>
+    </form>
+    <br>
+    <h4>Analyze Handles</h4>
+    <form action="{{ url_for('home.analyze_handles')}}" method='POST'>
+        {{ analyzeform.hidden_tag() }}
+        <p>
+            {{ analyzeform.text_to_compare.label }}
+            {{ analyzeform.text_to_compare }}
+        </p>
+        <p>
+            {{ analyzeform.select_handles.label }} <br>
+            {{ analyzeform.select_handles }}
+        </p>
+        <p>
+            {{ analyzeform.submit() }}
+        </p>
+    </form>
+    <table>
+        <tr>
+            <th>Handle A</th>
+            <th>Handle B</th>
+        </tr>
+        <tr>
+            <td>handlea-render</td>
+            <td>handleb=render</td>
+        </tr>
+    </table>
     <br>
     <strong>Debug Statements</strong>
     <ul>

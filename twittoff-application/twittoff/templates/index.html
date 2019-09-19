@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<h1>{% block title %}TwitOff{% endblock %}</h1>
+{% endblock%}
+
+{% block content%}
+<div class="container-fluid" id='app_content'>
+    <h2>Application Content Block</h2>
+    <br>
+    <strong>TODO</strong>
+    <ul>
+        <li>ADD TWITTER HANDLE FORM</li>
+        <li>GET/LOAD TWEETS</li>
+        <li>GET/LOAD BASILICA DATA</li>
+    </ul>
+    <br>
+    <strong>Debug Statements</strong>
+    <ul>
+        <li>AuthorA: </li>
+        <ol>
+            <li>A.tweets.head</li>
+            <li>A.firsttweet.basilica</li>
+        </ol>
+        <li>AuthorB: </li>
+        <ol>
+            <li>B.tweets.head</li>
+            <li>A.firsttweet.basilica</li>
+        </ol>
+    </ul>
+</div>
+
+{% endblock %}

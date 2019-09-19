@@ -10,7 +10,6 @@
     <br>
     <strong>TODO</strong>
     <ul>
-        <li>SELECT TWITTER HANDLES FORM</li>
         <li>LOAD TWEETS INTO DB ON ANALYZE</li>
         <li>GET/LOAD BASILICA DATA ON TWEET PUSH TO DB</li>
         <li>CRY FOR JOY</li>
@@ -49,29 +48,10 @@
             {{ analyzeform.submit() }}
         </p>
     </form>
-    <table>
-        <tr>
-            <th>Handle A</th>
-            <th>Handle B</th>
-        </tr>
-        <tr>
-            <td>handlea-render</td>
-            <td>handleb=render</td>
-        </tr>
-    </table>
     <br>
     <strong>Debug Statements</strong>
     <ul>
-        <li>AuthorA: </li>
-        <ol>
-            <li>A.tweets.head</li>
-            <li>A.firsttweet.basilica</li>
-        </ol>
-        <li>AuthorB: </li>
-        <ol>
-            <li>B.tweets.head</li>
-            <li>A.firsttweet.basilica</li>
-        </ol>
+        <li>Model Output: {{ modeloutput }}</li>
     </ul>
 </div>
 

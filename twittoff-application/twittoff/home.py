@@ -4,7 +4,7 @@ from flask import (
 
 from twittoff.auth import login_required
 from twittoff.db import get_db
-from twittoff.twitter import get_tweets
+from twittoff.twitter import get_tweets, push_tweets, TweetPackage
 from twittoff.forms import AddHandleForm, AnalyzeHandlesForm
 
 
@@ -13,24 +13,23 @@ bp = Blueprint('home', __name__)
 
 @bp.route('/', methods=('GET', 'POST'))
 def index():
+    # load forms and form display information
     add_form = AddHandleForm()
     analyze_form = AnalyzeHandlesForm()
-
     analyze_form.select_handles.choices = get_current_handles()
+
+    # load model_data
+    model_output = get_model_output()
 
     return render_template(
         'index.html',
         addform=add_form,
-        analyzeform=analyze_form)
+        analyzeform=analyze_form,
+        modeloutput=model_output)
 
 
 @bp.route('/add', methods=['POST'])
 def add_handle():
-    add_form = AddHandleForm()
-    analyze_form = AnalyzeHandlesForm()
-
-    analyze_form.select_handles.choices = get_current_handles()
-
     if request.method == 'POST':
         db = get_db()
         new_handle = request.form['twitter_handle']
@@ -48,23 +47,17 @@ def add_handle():
             flash('Handle Already Entered')
             return redirect(url_for('home.index'))
 
-    return render_template(
-        'index.html',
-        addform=add_form,
-        analyzeform=analyze_form)
+    return redirect(url_for('home.index'))
 
 
 @bp.route('/analyze', methods=['POST'])
 def analyze_handles():
-    add_form = AddHandleForm()
-    analyze_form = AnalyzeHandlesForm()
+    if request.method == 'POST':
+        selected_handles = request.form.getlist('select_handles')
+        print(update_tweets(selected_handles))
+        text_to_compare = request.form['text_to_compare']
 
-    analyze_form.select_handles.choices = get_current_handles()
-
-    return render_template(
-        'index.html',
-        addform=add_form,
-        analyzeform=analyze_form)
+    return redirect(url_for('home.index'))
 
 
 def get_current_handles():
@@ -79,10 +72,50 @@ def get_current_handles():
     ).fetchall()
 
     if len(choices) < 1:
-        print('default_choices', default_choices)
         return default_choices
-    print('choices', choices)
     return choices
 
 # example_tweets = get_tweets(user='vincebrandon', number=5)
 # print(example_tweets)
+
+
+def get_model_output():
+    if 'model_output' not in g:
+        return 'Model Not Initialized'
+    return g.model_output
+
+
+def update_tweets(author_id_list, min_tweets=20):
+    # db = get_db()
+    for author_id in author_id_list:
+        if count_existing_tweets(author_id) < min_tweets:
+            print('attempting update')
+            package = TweetPackage(
+                author_id=author_id,
+                tweets=get_tweets(
+                    user=get_handle(author_id),
+                    number=min_tweets
+                )
+            )
+            print('updating with', package)
+            push_tweets(package)
+            return True
+    return False
+
+
+def get_handle(author_id):
+    db = get_db()
+    handle = db.execute(
+        'SELECT twitter_handle FROM authors WHERE id = ?;', (author_id,)
+    ).fetchone()
+    return handle[0]
+
+
+def count_existing_tweets(author_id):
+    db = get_db()
+    count = db.execute(
+        'SELECT COUNT (*) FROM tweets WHERE author_id = ?;', (author_id,)
+    ).fetchone()
+    print('author {} count is {}'.format(author_id, count[0]))
+    return count[0]
+

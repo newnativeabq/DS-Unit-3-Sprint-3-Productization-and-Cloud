@@ -12,5 +12,5 @@ class AddHandleForm(FlaskForm):
 
 class AnalyzeHandlesForm(FlaskForm):
     text_to_compare = StringField('Text to Compare', validators=[DataRequired], id='text')
-    select_handles = SelectMultipleField(label='Handles', id='selected_handles')
+    select_handles = SelectMultipleField(label='Handles', validators=[DataRequired], id='selected_handles')
     submit = SubmitField('Check Tweets')

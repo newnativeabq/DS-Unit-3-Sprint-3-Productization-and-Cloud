@@ -32,7 +32,7 @@ def create_app():
     def refresh():
         """Pull fresh data from Open AQ and replace existing data."""
         if request.method == 'POST':
-            city = get_city(request.form['city'])
+            city = set_city(request.form['city'])
         else:
             return redirect(url_for('run'))
         DB.drop_all()

@@ -34,22 +34,8 @@
               {{ form.submit() }}
           </p>
       </form>
-        <!-- Display Data  -->
-        <table>
-            <tr>
-              <th>DateTime</th>
-              <th>Value</th>
-            </tr>
-          {% for record in data %}
-            <tr>
-              <td>{{ record.datetime }}</td>
-              <td>{{ record.value }}</td>
-            </tr>
-          {% endfor %}
-        </table>
-          {{ data.datetime }}, {{ data.value }}
-
-
+      {% block content %}
+      {% endblock %}
     </article>
   </body>
 </html>

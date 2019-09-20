@@ -15,9 +15,17 @@ def create_app():
     # Create route to the home page
     @app.route('/')
     def root():
-        data = fetch_data()
+        #data = fetch_data()
         return render_template(
-            'base.html', title='Home', data=data, form=SelectCityForm())
+            'base.html', title='Home', form=SelectCityForm())
+
+    @app.route('/run', methods=(['GET', 'POST']))
+    def run():
+        data = fetch_data()
+        city = get_city()
+        return render_template(
+            'index.html', title='Home', data=data, city=city,
+            form=SelectCityForm())
 
     # Create route to allow user to refreshd data in the database
     @app.route('/refresh', methods=(['GET', 'POST']))
@@ -29,7 +37,7 @@ def create_app():
                 g.city = city
                 print('setting city to', city)
         else:
-            return redirect(url_for('root'))
+            return redirect(url_for('run'))
         DB.drop_all()
         DB.create_all()
         params={'city': city, 'parameter': 'pm25'}  # Can configure from selection
@@ -41,7 +49,7 @@ def create_app():
             ),
         )
         DB.session.commit()
-        return redirect(url_for('root'))
+        return redirect(url_for('run'))
     ## CAREFUL DO NOT DELETE THIS
     return app
     ## CAREFUL DO NOT DELETE THIS RETURN STATEMENT
@@ -75,6 +83,12 @@ def push_data_to_db(params, data):
 def fetch_data():
     return Record.query.filter(Record.value >= 10)
 
+
+def get_city():
+    if 'city' not in g:
+        city = 'Unsure'
+    city = g.city
+    return city
 
 # Data class
 class Results():

@@ -10,8 +10,10 @@ CREATE TABLE users (
 
 CREATE TABLE tweets (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
+    tweet_id TEXT NOT NULL,
     author_id INTEGER NOT NULL,
     body TEXT NOT NULL,
+    embedding TEXT NOT NULL,
     FOREIGN KEY (author_id) REFERENCES authors (id)
 );
 
@@ -19,10 +21,3 @@ CREATE TABLE authors (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     twitter_handle TEXT NOT NULL
 );
-
-CREATE TABLE vectorizedTweets (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    tweet_id INTEGER NOT NULL,
-    vector TEXT NOT NULL,
-    FOREIGN KEY (tweet_id) REFERENCES tweets (id)
-)

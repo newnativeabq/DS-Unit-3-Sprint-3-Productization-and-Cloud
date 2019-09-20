@@ -32,10 +32,7 @@ def create_app():
     def refresh():
         """Pull fresh data from Open AQ and replace existing data."""
         if request.method == 'POST':
-            city = request.form['city']
-            if 'city' not in g:
-                g.city = city
-                print('setting city to', city)
+            city = get_city(request.form['city'])
         else:
             return redirect(url_for('run'))
         DB.drop_all()
@@ -84,11 +81,22 @@ def fetch_data():
     return Record.query.filter(Record.value >= 10)
 
 
+def set_city(city):
+    if 'city' not in g:
+        g.city = city
+        city = g.city
+
+    return city
+
 def get_city():
     if 'city' not in g:
-        city = 'Unsure'
-    city = g.city
+        city = 'City not Found'
+    else:
+        city = g.city
+
     return city
+
+
 
 # Data class
 class Results():
